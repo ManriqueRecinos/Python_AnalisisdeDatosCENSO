@@ -1,19 +1,19 @@
+
 import openpyxl
-from tabulate import tabulate
 
-excel_dataframe = openpyxl.load_workbook("db/poblacion.xlsx")
+def get_data_poblacion(file_path="../db/poblacion.xlsx"):
+    
+    excel_dataframe = openpyxl.load_workbook(file_path)
 
-dataframe = excel_dataframe.active
-data = []
+    dataframe = excel_dataframe.active
 
-for row in range(2, dataframe.max_row):
-    _row = [row,]
-    for col in dataframe.iter_cols(1,dataframe.max_column):
-        _row.append(col[row].value)
-        
-    data.append(_row)
-        
-headers= ["#","Departamento","Hombres","Mujeres","Total","%"]
-headers_align= (("center",)*6)
+    data = []
 
-print(tabulate( data, headers= headers, tablefmt='fancy_grid',  colalign= headers_align ))
+    for row in dataframe.iter_rows(min_row=2, max_row=dataframe.max_row, max_col=dataframe.max_column):
+        _row = [cell.value for cell in row] 
+        data.append(_row)
+
+    return data
+
+
+
